@@ -21,6 +21,20 @@ def dance(dancers, moves):
             dancers[index_b] = partners[0]
     return dancers
 
+def dance_repeated(dancers, moves, total=1_000_000_000):
+    seen = []
+    current = dancers[:]
+    while True:
+        state_str = ''.join(current)
+        if state_str in seen:
+            cycle_start = seen.index(state_str)
+            cycle = seen[cycle_start:]
+            final_state_index = (total - cycle_start) % len(cycle)
+            return cycle[final_state_index]
+        seen.append(state_str)
+        current = dance(current, moves)
+
+
 def do_main(debug_mode=False):
     with open(Path('16/input.txt')) as file:
         lines = [line.rstrip() for line in file]
@@ -34,12 +48,13 @@ def do_main(debug_mode=False):
     point_sum = 0
 
     moves = lines[0].split(',')
-    part1 = dance(dancers, moves)
+    part1 = dance(dancers[:], moves)
     print(''.join(part1))
-
-    for i in tqdm(range(1000000000)):
-        dancers = dance(dancers, moves)
-    print(''.join(dancers))
+    
+    part2 = dance_repeated(dancers[:], moves)
+    print(''.join(part2))
+    
+    
 
 if __name__ == '__main__':
     do_main(False)
