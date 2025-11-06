@@ -12,3 +12,9 @@ class CircularList(list):
                 super().__setitem__(i % len(self), val)
         else:
             super().__setitem__(index % len(self), value)
+    def insert(self, index, value):
+        if self:
+            index = index % len(self)
+        else:
+            index = 0
+        super().insert(index, value)
