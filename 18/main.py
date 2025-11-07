@@ -1,4 +1,5 @@
 from pathlib import Path
+import winsound
 
 def run_instruction(registers, instructions, last_freq, pointer):
     op, register, val = instructions[pointer]
@@ -9,6 +10,7 @@ def run_instruction(registers, instructions, last_freq, pointer):
             val = registers[val]
     if op == "snd":
         last_freq = registers[register]
+        winsound.Beep(registers[register], 100)
     elif op == "set":
         registers[register] = val
     elif op == "add":
@@ -120,8 +122,6 @@ def do_main(debug_mode=False):
                 recieve_queue_0.append(snd_val)
         if blocked0 and blocked1 and not recieve_queue_0 and not recieve_queue_1:
             break
-        else:
-            print(f"running with pointer0 {pointer_0} and pointer1 {pointer_1}")
 
 
     print(snd_count)
